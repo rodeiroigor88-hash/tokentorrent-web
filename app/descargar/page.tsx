@@ -4,9 +4,9 @@ import { WaitlistForm } from '@/components/download/waitlist-form'
 import { StoreBadges } from '@/components/download/store-badges'
 
 export const metadata: Metadata = {
-  title: 'Descarga la App',
+  title: 'Descargar',
   description:
-    'La aplicación nativa de TokenTorrent llega pronto a iOS y Android. Únete a la lista de espera para acceso anticipado.',
+    'La aplicación de escritorio de TokenTorrent para Windows llega pronto. Únete a la lista de espera para acceso anticipado.',
 }
 
 export default function DownloadPage() {
@@ -15,14 +15,14 @@ export default function DownloadPage() {
       <Reveal className="flex flex-col items-center gap-6">
         <p className="flex items-center gap-2 rounded-full border border-border px-4 py-1.5 font-mono text-xs text-muted-foreground">
           <span aria-hidden="true" className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" />
-          próximamente
+          próximamente en Windows
         </p>
         <h1 className="max-w-2xl text-4xl font-semibold tracking-tight text-balance md:text-6xl">
-          El torrente, en tu bolsillo
+          El torrente, en tu escritorio
         </h1>
         <p className="max-w-lg text-lg leading-relaxed text-muted-foreground text-pretty">
-          Estamos ultimando la aplicación nativa para iOS y Android. Apúntate a la lista de espera y sé de los primeros
-          en probarla.
+          Estamos ultimando la firma de código de los binarios de Windows. Apúntate a la lista de espera y sé de los
+          primeros en probarla — o ejecuta el proyecto ya mismo desde el código fuente en GitHub.
         </p>
       </Reveal>
 

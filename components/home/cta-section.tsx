@@ -10,7 +10,8 @@ export function CtaSection() {
             Sé de los primeros en entrar al torrente
           </h2>
           <p className="max-w-md leading-relaxed text-muted-foreground text-pretty">
-            La aplicación nativa está en camino. Reserva tu lugar en la lista de espera y recibe acceso anticipado.
+            La aplicación de escritorio para Windows está en camino. Reserva tu lugar en la lista de espera y recibe
+            acceso anticipado.
           </p>
           <MagneticButton href="/descargar">Reservar mi lugar</MagneticButton>
         </Reveal>

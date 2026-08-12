@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 
 const CHARS = '0123456789abcdef'
-const PLAIN = 'transfer 42.00 TT -> nodo:7f3a'
+const PLAIN = 'forward hidden_states -> nodo:7f3a'
 
 function scramble(progress: number) {
   return PLAIN.split('')
@@ -35,15 +35,15 @@ export function CipherVisual() {
     <div className="overflow-hidden rounded-2xl border border-border bg-card">
       <div className="flex items-center gap-2 border-b border-border px-5 py-3">
         <span aria-hidden="true" className="h-2.5 w-2.5 rounded-full bg-primary/60" />
-        <p className="font-mono text-xs text-muted-foreground">tunel_cifrado.log</p>
+        <p className="font-mono text-xs text-muted-foreground">worker.log</p>
       </div>
       <div className="flex flex-col gap-3 p-6 font-mono text-sm" aria-live="off">
-        <p className="text-muted-foreground">{'>'} iniciando handshake x25519…</p>
-        <p className="text-muted-foreground">{'>'} canal establecido · aes-256-gcm</p>
-        <p className="text-primary" aria-label="Transferencia cifrándose en tiempo real">
+        <p className="text-muted-foreground">{'>'} handshake mTLS con nodo:7f3a…</p>
+        <p className="text-muted-foreground">{'>'} certificado verificado · canal establecido</p>
+        <p className="text-primary" aria-label="Tensor cifrándose en tiempo real">
           {'>'} {text}
         </p>
-        <p className="text-muted-foreground">{'>'} fragmentos: 64/64 verificados [ok]</p>
+        <p className="text-muted-foreground">{'>'} proof of compute: capas 8-15 [ok]</p>
       </div>
     </div>
   )

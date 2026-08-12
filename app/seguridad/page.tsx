@@ -6,7 +6,7 @@ import { SecurityLayers } from '@/components/security/security-layers'
 export const metadata: Metadata = {
   title: 'Seguridad',
   description:
-    'La infraestructura de seguridad de TokenTorrent: cifrado de extremo a extremo, custodia propia y verificación distribuida.',
+    'La infraestructura de seguridad de TokenTorrent: TLS/mTLS, Proof of Compute y enrutamiento firmado.',
 }
 
 export default function SecurityPage() {
@@ -19,8 +19,8 @@ export default function SecurityPage() {
             Cifrado primero. Confianza después.
           </h1>
           <p className="max-w-lg text-lg leading-relaxed text-muted-foreground text-pretty">
-            Nada viaja en claro. Cada fragmento se cifra en tu dispositivo antes de tocar la red, y solo el destinatario
-            posee la llave para reconstruirlo.
+            Nada viaja en claro entre nodos. Cada uno demuestra su identidad con un certificado propio, y su cómputo
+            con un reto firmado — no basta con decir que aloja las capas correctas.
           </p>
         </Reveal>
         <Reveal delay={0.15}>

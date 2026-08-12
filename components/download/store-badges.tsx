@@ -1,34 +1,37 @@
-/** Contenedores estilizados para los badges de App Store y Google Play (se activarán en el lanzamiento). */
+/** Contenedor estilizado para el badge de Windows y el enlace al código fuente. */
 export function StoreBadges() {
   return (
     <div className="flex flex-col items-center gap-4">
       <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">Disponible pronto en</p>
       <div className="flex flex-wrap items-center justify-center gap-4">
         <div
-          aria-label="App Store, disponible próximamente"
-          className="flex h-14 w-44 items-center justify-center gap-3 rounded-xl border border-dashed border-border bg-card/50 text-muted-foreground"
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8.79-.16 1.55-.83 2.94-.87 1.67.13 2.93.79 3.76 1.99-3.45 2.07-2.9 6.61.51 7.98-.63 1.66-1.45 3.31-2.29 3.07zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
-          </svg>
-          <span className="text-left text-xs leading-tight">
-            <span className="block text-[10px]">Próximamente</span>
-            <span className="block font-semibold text-foreground/60">App Store</span>
-          </span>
-        </div>
-
-        <div
-          aria-label="Google Play, disponible próximamente"
+          aria-label="Windows, disponible próximamente"
           className="flex h-14 w-44 items-center justify-center gap-3 rounded-xl border border-dashed border-border bg-card/50 text-muted-foreground"
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M3.6 1.8L13.7 12 3.6 22.2c-.4-.2-.6-.6-.6-1.1V2.9c0-.5.2-.9.6-1.1zM14.9 13.2l2.6 2.6-11.3 6.4 8.7-9zM17.5 8.2l-2.6 2.6-8.7-9 11.3 6.4zM18.6 9.2l2.9 1.7c.9.5.9 1.7 0 2.2l-2.9 1.7-2.9-2.8 2.9-2.8z" />
+            <path d="M3 5.5L10 4.5V11.5H3V5.5ZM11 4.4L21 3V11.5H11V4.4ZM3 12.5H10V19.5L3 18.5V12.5ZM11 12.5H21V21L11 19.6V12.5Z" />
           </svg>
           <span className="text-left text-xs leading-tight">
             <span className="block text-[10px]">Próximamente</span>
-            <span className="block font-semibold text-foreground/60">Google Play</span>
+            <span className="block font-semibold text-foreground/60">Windows</span>
           </span>
         </div>
+
+        <a
+          href="https://github.com/rodeiroigor88-hash/AI-Torrent-Protocol"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Código fuente en GitHub, disponible ahora"
+          className="flex h-14 w-44 items-center justify-center gap-3 rounded-xl border border-border bg-card/50 text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.5 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.36-3.37-1.36-.45-1.19-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.89 1.57 2.34 1.11 2.91.85.09-.67.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.72 0 0 .84-.28 2.75 1.05a9.3 9.3 0 0 1 5 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.46.1 2.72.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.79-4.57 5.05.36.32.68.94.68 1.9 0 1.37-.01 2.48-.01 2.81 0 .28.18.61.69.5A10.26 10.26 0 0 0 22 12.25C22 6.58 17.52 2 12 2Z" />
+          </svg>
+          <span className="text-left text-xs leading-tight">
+            <span className="block text-[10px]">Disponible ahora</span>
+            <span className="block font-semibold text-foreground/60">GitHub</span>
+          </span>
+        </a>
       </div>
     </div>
   )

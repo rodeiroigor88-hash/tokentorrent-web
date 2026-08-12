@@ -3,7 +3,7 @@ import { Reveal } from '@/components/site/reveal'
 const PROPS = [
   {
     title: 'Peer-to-peer real',
-    body: 'Cada transferencia viaja directamente entre nodos. Sin servidores centrales que puedan caer, censurar o cobrar peaje.',
+    body: 'Las capas del modelo viajan directamente entre los nodos del enjambre. Sin servidor central que las ejecute por ti ni pueda caerse.',
     icon: (
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
         <circle cx="4" cy="10" r="2.2" stroke="currentColor" strokeWidth="1.5" />
@@ -14,8 +14,8 @@ const PROPS = [
     ),
   },
   {
-    title: 'Liquidación instantánea',
-    body: 'Confirmaciones en milisegundos gracias a la propagación en enjambre. Tu activo llega antes de que sueltes el botón.',
+    title: 'Identidad verificable',
+    body: 'Cada nodo del enjambre tiene un certificado propio (TLS/mTLS) y demuestra con Proof of Compute que realmente ejecuta las capas que dice alojar.',
     icon: (
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
         <path d="M11 2L4 11h5l-1 7 7-9h-5l1-7z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
@@ -23,8 +23,8 @@ const PROPS = [
     ),
   },
   {
-    title: 'Custodia propia',
-    body: 'Tus claves nunca abandonan tu dispositivo. TokenTorrent orquesta la red; tú mantienes la propiedad.',
+    title: 'Código abierto',
+    body: 'Todo el protocolo es auditable en GitHub. Se ejecuta en tu propio hardware, con licencia Apache 2.0.',
     icon: (
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
         <rect x="4" y="9" width="12" height="8" rx="1.5" stroke="currentColor" strokeWidth="1.5" />

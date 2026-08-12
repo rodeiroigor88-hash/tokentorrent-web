@@ -57,7 +57,7 @@ export function SiteHeader() {
 
         <div className="hidden md:block">
           <MagneticButton href="/descargar" size="sm">
-            Descarga la App
+            Descargar
           </MagneticButton>
         </div>
 
@@ -89,7 +89,7 @@ export function SiteHeader() {
             className="overflow-hidden border-t border-border/60 md:hidden"
           >
             <div className="flex flex-col gap-1 px-6 py-4">
-              {[...NAV, { href: '/descargar', label: 'Descarga la App' }].map((item) => (
+              {[...NAV, { href: '/descargar', label: 'Descargar' }].map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}

@@ -3,23 +3,23 @@ import { Reveal } from '@/components/site/reveal'
 const LAYERS = [
   {
     step: 'capa 1',
-    title: 'Cifrado en el dispositivo',
-    body: 'AES-256-GCM con intercambio de claves X25519. El contenido se cifra antes de salir de tu hardware; la red solo ve ruido.',
+    title: 'TLS / mTLS',
+    body: 'PKI propia del enjambre. Cada nodo presenta un certificado como identidad; la conexión se autentica en ambos sentidos, no solo hacia el servidor.',
   },
   {
     step: 'capa 2',
-    title: 'Fragmentación y dispersión',
-    body: 'Cada activo se divide en fragmentos firmados que viajan por rutas independientes. Interceptar uno no revela nada.',
+    title: 'Proof of Compute',
+    body: 'Un reto firmado obliga al nodo a demostrar que ejecuta realmente las capas del modelo que dice alojar, comparando la salida contra una referencia.',
   },
   {
     step: 'capa 3',
-    title: 'Verificación distribuida',
-    body: 'Los nodos validan firmas y hashes de forma redundante. Un fragmento alterado se descarta y se re-solicita automáticamente.',
+    title: 'Enrutamiento firmado',
+    body: 'El camino del pipeline viaja firmado dentro de cada petición. Un nodo no puede reenviar tráfico hacia un destino que no forma parte de la ruta autorizada.',
   },
   {
     step: 'capa 4',
-    title: 'Custodia propia',
-    body: 'Las claves privadas nunca se transmiten ni se respaldan en servidores. Recuperación mediante frases de respaldo cifradas localmente.',
+    title: 'Límite de peticiones',
+    body: 'Cada endpoint tiene su propio control de ritmo, más estricto en el que ejecuta inferencia real, para que un cliente ruidoso no pueda saturar al resto.',
   },
 ]
 

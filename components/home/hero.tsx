@@ -32,14 +32,15 @@ export function Hero() {
 
           <StaggerItem>
             <h1 className="max-w-3xl text-5xl font-semibold leading-[1.05] tracking-tight text-balance md:text-7xl">
-              El valor fluye como un <span className="text-primary">torrente</span>.
+              Un modelo de IA fluye como un <span className="text-primary">torrente</span>.
             </h1>
           </StaggerItem>
 
           <StaggerItem>
             <p className="max-w-xl text-lg leading-relaxed text-muted-foreground text-pretty">
-              TokenTorrent distribuye activos tokenizados de nodo a nodo, sin intermediarios. Transferencias
-              instantáneas, verificables y bajo tu control.
+              TokenTorrent reparte las capas de un LLM entre varios ordenadores y las ejecuta en cadena sobre HTTP.
+              Igual que BitTorrent mueve bits, TokenTorrent mueve tokens — sin servidor central que corra el modelo
+              por ti.
             </p>
           </StaggerItem>
 

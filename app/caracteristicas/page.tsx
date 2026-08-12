@@ -5,7 +5,7 @@ import { BentoGrid } from '@/components/features/bento-grid'
 export const metadata: Metadata = {
   title: 'Características',
   description:
-    'Explora las capacidades de TokenTorrent: transferencias en enjambre, custodia propia, API de desarrolladores y más.',
+    'Explora las capacidades de TokenTorrent: pipeline en enjambre, Proof of Compute, TLS/mTLS y más.',
 }
 
 export default function FeaturesPage() {
@@ -17,8 +17,8 @@ export default function FeaturesPage() {
           Todo lo que mueve el torrente
         </h1>
         <p className="max-w-xl text-lg leading-relaxed text-muted-foreground text-pretty">
-          Un conjunto de capacidades diseñadas para que el valor circule sin fricción. Pasa el cursor sobre cada módulo
-          para explorarlo.
+          Un conjunto de capacidades diseñadas para que la inferencia circule sin fricción entre nodos. Pasa el
+          cursor sobre cada módulo para explorarlo.
         </p>
       </Reveal>
 

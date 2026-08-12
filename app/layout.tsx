@@ -10,12 +10,11 @@ const geistMono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono'
 
 export const metadata: Metadata = {
   title: {
-    default: 'TokenTorrent — Distribución de valor a velocidad de red',
+    default: 'TokenTorrent — Inferencia de IA distribuida en enjambre',
     template: '%s · TokenTorrent',
   },
   description:
-    'TokenTorrent es la plataforma de distribución tokenizada peer-to-peer. Infraestructura segura, transferencias instantáneas y control total sobre tus activos digitales.',
-  generator: 'v0.app',
+    'TokenTorrent reparte las capas de un modelo de lenguaje entre varios ordenadores y las ejecuta en cadena sobre HTTP. Igual que BitTorrent mueve bits, TokenTorrent mueve tokens. Código abierto, sin servidor central.',
   icons: {
     icon: [{ url: '/icon.svg', type: 'image/svg+xml' }],
     apple: '/apple-icon.png',
