@@ -34,8 +34,9 @@ npm run typecheck  # solo comprobacion de tipos, sin emitir
 
 ## Variables de entorno
 
-Copia `.env.local.example` a `.env.local`. Ahora mismo la unica integracion es Redis (Upstash), usada por el
-formulario de lista de espera en `app/descargar/actions.ts`. En Vercel se configuran desde
+Copia `.env.local.example` a `.env.local`. La integracion actual es Redis (Upstash), usada por el
+formulario de lista de espera en `app/descargar/actions.ts` y por el rate limit por IP en
+`lib/rate-limit.ts` (INCR + EXPIRE NX, fail-open si Upstash cae). En Vercel se configuran desde
 **Settings -> Environment Variables**, nunca committeadas al repo.
 
 ## Estructura
