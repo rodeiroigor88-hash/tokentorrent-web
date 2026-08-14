@@ -10,7 +10,7 @@
     },
     {
       "source": "/favicon.ico",
-      "destination": "https://www.tokentorrent.es/favicon.svg"
+      "destination": "http://us-1.in.supercores.host:9007/ai-torrent/favicon.ico"
     }
   ]
 }
