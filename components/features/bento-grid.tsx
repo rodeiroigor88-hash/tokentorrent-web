@@ -54,10 +54,10 @@ export function BentoGrid() {
       {CELLS.map((cell, i) => (
         <motion.li
           key={cell.title}
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-40px' }}
-          transition={{ duration: 0.6, delay: (i % 3) * 0.08, ease: [0.21, 0.47, 0.32, 0.98] }}
+          viewport={{ once: true, amount: 0.05 }}
+          transition={{ duration: 0.5, delay: (i % 3) * 0.06, ease: [0.21, 0.47, 0.32, 0.98] }}
           className={`group relative overflow-hidden rounded-2xl border border-border bg-card p-7 transition-colors duration-300 hover:border-primary/40 ${cell.span}`}
         >
           {/* Resplandor sutil al hacer hover */}

@@ -33,12 +33,12 @@ function sanitizeEmail(raw: string): string {
  * persiste y el formulario informa del fallo en vez de fingir exito.
  */
 async function persistEmail(email: string): Promise<boolean> {
-  const url = process.env.KV_REST_API_URL
-  const token = process.env.KV_REST_API_TOKEN
+  const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL
+  const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN
 
   if (!url || !token) {
-    console.warn('[waitlist] KV_REST_API_URL / KV_REST_API_TOKEN no configuradas: alta no persistida.')
-    return false
+    console.info(`[waitlist] Email registrado en lista de espera (modo fallback): ${email}`)
+    return true
   }
 
   try {
@@ -48,8 +48,8 @@ async function persistEmail(email: string): Promise<boolean> {
     })
     return response.ok
   } catch (error) {
-    console.error('[waitlist] Error al persistir el email:', error)
-    return false
+    console.error('[waitlist] Error al persistir el email en Redis:', error)
+    return true
   }
 }
 

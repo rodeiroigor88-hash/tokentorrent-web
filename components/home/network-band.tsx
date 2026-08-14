@@ -1,13 +1,14 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { Reveal } from '@/components/site/reveal'
 import type { SwarmStats } from '@/app/api/swarm/route'
 
 /** Visualización abstracta del enjambre: paquetes viajando entre nodos y telemetría en vivo. */
 export function NetworkBand() {
   const [stats, setStats] = useState<SwarmStats | null>(null)
+  const shouldReduceMotion = useReducedMotion()
 
   useEffect(() => {
     let mounted = true
@@ -97,32 +98,36 @@ export function NetworkBand() {
                     className="text-border"
                     strokeWidth="0.4"
                   />
-                  <motion.circle
-                    r="1.1"
-                    className="fill-primary"
-                    initial={{ cx: nodes[a].x, cy: nodes[a].y, opacity: 0 }}
-                    animate={{
-                      cx: [nodes[a].x, nodes[b].x],
-                      cy: [nodes[a].y, nodes[b].y],
-                      opacity: [0, 1, 1, 0],
-                    }}
-                    transition={{ duration: 2.4, delay: i * 0.5, repeat: Infinity, ease: 'easeInOut' }}
-                  />
+                  {!shouldReduceMotion && (
+                    <motion.circle
+                      r="1.1"
+                      className="fill-primary"
+                      initial={{ cx: nodes[a].x, cy: nodes[a].y, opacity: 0 }}
+                      animate={{
+                        cx: [nodes[a].x, nodes[b].x],
+                        cy: [nodes[a].y, nodes[b].y],
+                        opacity: [0, 1, 1, 0],
+                      }}
+                      transition={{ duration: 2.4, delay: i * 0.5, repeat: Infinity, ease: 'easeInOut' }}
+                    />
+                  )}
                 </g>
               ))}
               {nodes.map((n, i) => (
                 <g key={i}>
                   <circle cx={n.x} cy={n.y} r="2.6" className="fill-background stroke-primary" strokeWidth="0.6" />
-                  <motion.circle
-                    cx={n.x}
-                    cy={n.y}
-                    r="2.6"
-                    className="fill-none stroke-primary/40"
-                    initial={{ r: 2.6, opacity: 0.6 }}
-                    animate={{ r: 6, opacity: 0 }}
-                    transition={{ duration: 2, delay: i * 0.35, repeat: Infinity }}
-                    strokeWidth="0.4"
-                  />
+                  {!shouldReduceMotion && (
+                    <motion.circle
+                      cx={n.x}
+                      cy={n.y}
+                      r="2.6"
+                      className="fill-none stroke-primary/40"
+                      initial={{ r: 2.6, opacity: 0.6 }}
+                      animate={{ r: 6, opacity: 0 }}
+                      transition={{ duration: 2, delay: i * 0.35, repeat: Infinity }}
+                      strokeWidth="0.4"
+                    />
+                  )}
                 </g>
               ))}
             </svg>
