@@ -1,6 +1,7 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import { useReducedMotion } from 'framer-motion'
 
 type Cell = {
   title: string
@@ -49,16 +50,25 @@ const CELLS: Cell[] = [
 ]
 
 export function BentoGrid() {
+  const shouldReduceMotion = useReducedMotion()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    const timer = requestAnimationFrame(() => setMounted(true))
+    return () => cancelAnimationFrame(timer)
+  }, [])
+
   return (
     <ul className="grid gap-4 md:grid-cols-3" role="list">
       {CELLS.map((cell, i) => (
-        <motion.li
+        <li
           key={cell.title}
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0 }}
-          transition={{ duration: 0.5, delay: (i % 3) * 0.05, ease: [0.21, 0.47, 0.32, 0.98] }}
-          className={`group relative overflow-hidden rounded-2xl border border-border bg-card p-7 transition-colors duration-300 hover:border-primary/40 ${cell.span}`}
+          style={{
+            transitionDelay: shouldReduceMotion ? '0s' : `${(i % 3) * 0.08}s`,
+          }}
+          className={`group relative overflow-hidden rounded-2xl border border-border bg-card p-7 transition-all duration-700 ease-[cubic-bezier(0.21,0.47,0.32,0.98)] hover:border-primary/40 ${
+            mounted || shouldReduceMotion ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+          } ${cell.span}`}
         >
           {/* Resplandor sutil al hacer hover */}
           <div
@@ -79,7 +89,7 @@ export function BentoGrid() {
               →
             </span>
           </div>
-        </motion.li>
+        </li>
       ))}
     </ul>
   )
