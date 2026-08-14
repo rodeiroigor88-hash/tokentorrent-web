@@ -37,8 +37,9 @@ async function persistEmail(email: string): Promise<boolean> {
   const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN
 
   if (!url || !token) {
-    console.info(`[waitlist] Email registrado en lista de espera (modo fallback): ${email}`)
-    return true
+    // Never report success when persistence is not configured. Logging the
+    // address here would also expose personal data in server logs.
+    return false
   }
 
   try {
@@ -47,9 +48,8 @@ async function persistEmail(email: string): Promise<boolean> {
       cache: 'no-store',
     })
     return response.ok
-  } catch (error) {
-    console.error('[waitlist] Error al persistir el email en Redis:', error)
-    return true
+  } catch {
+    return false
   }
 }
 

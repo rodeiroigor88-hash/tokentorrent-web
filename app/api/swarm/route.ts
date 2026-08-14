@@ -4,6 +4,7 @@ export const revalidate = 10 // Revalidar en edge cada 10 segundos
 
 export interface SwarmStats {
   status: 'online' | 'degraded' | 'offline'
+  error?: string
   nodesCount: number
   models: string[]
   totalCores: number
@@ -13,7 +14,19 @@ export interface SwarmStats {
 }
 
 export async function GET() {
-  const trackerUrl = process.env.TRACKER_API_URL || 'https://tokentorrent.es/v1/tokentorrent/tracker'
+  const trackerUrl = process.env.TRACKER_API_URL
+  if (!trackerUrl) {
+    return NextResponse.json<SwarmStats>({
+      status: 'offline',
+      error: 'TRACKER_API_URL no está configurado',
+      nodesCount: 0,
+      models: [],
+      totalCores: 0,
+      totalRamGb: 0,
+      latencyMs: 0,
+      lastUpdated: new Date().toISOString(),
+    }, { status: 503 })
+  }
   const startTime = Date.now()
 
   try {
@@ -41,9 +54,9 @@ export async function GET() {
         return NextResponse.json<SwarmStats>({
           status: 'online',
           nodesCount: count,
-          models: ['qwen-0.5b', 'gpt2'],
-          totalCores: count * 4,
-          totalRamGb: count * 8,
+          models: [],
+          totalCores: 0,
+          totalRamGb: 0,
           latencyMs,
           lastUpdated: new Date().toISOString(),
         })
@@ -73,7 +86,7 @@ export async function GET() {
     return NextResponse.json<SwarmStats>({
       status: 'online',
       nodesCount: rawNodes.length,
-      models: models.length > 0 ? models : ['qwen-0.5b', 'gpt2'],
+        models,
       totalCores,
       totalRamGb: Math.round((totalRamMb / 1024) * 10) / 10,
       latencyMs,
@@ -83,9 +96,10 @@ export async function GET() {
     // Si el tracker está temporalmente fuera o en desarrollo local, responder con fallback
     return NextResponse.json<SwarmStats>(
       {
-        status: 'degraded',
+        status: 'offline',
+        error: 'No se pudo conectar con el tracker',
         nodesCount: 0,
-        models: ['qwen-0.5b', 'gpt2', 'llama-3.2-1b'],
+        models: [],
         totalCores: 0,
         totalRamGb: 0,
         latencyMs: 0,
