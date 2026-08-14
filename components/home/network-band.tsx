@@ -1,10 +1,35 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Reveal } from '@/components/site/reveal'
+import type { SwarmStats } from '@/app/api/swarm/route'
 
-/** Visualización abstracta del enjambre: paquetes viajando entre nodos. */
+/** Visualización abstracta del enjambre: paquetes viajando entre nodos y telemetría en vivo. */
 export function NetworkBand() {
+  const [stats, setStats] = useState<SwarmStats | null>(null)
+
+  useEffect(() => {
+    let mounted = true
+    async function loadStats() {
+      try {
+        const res = await fetch('/api/swarm')
+        if (res.ok) {
+          const data = (await res.json()) as SwarmStats
+          if (mounted) setStats(data)
+        }
+      } catch {
+        // Fallback silencioso
+      }
+    }
+    loadStats()
+    const interval = setInterval(loadStats, 15000)
+    return () => {
+      mounted = false
+      clearInterval(interval)
+    }
+  }, [])
+
   const nodes = [
     { x: 8, y: 30 },
     { x: 30, y: 70 },
@@ -25,7 +50,23 @@ export function NetworkBand() {
     <section className="border-t border-border/60 bg-card/40">
       <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-24 md:grid-cols-2">
         <Reveal className="flex flex-col gap-5">
-          <p className="font-mono text-xs uppercase tracking-widest text-primary">La red</p>
+          <div className="flex items-center gap-2">
+            <p className="font-mono text-xs uppercase tracking-widest text-primary">La red</p>
+            {stats && (
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-border/80 bg-background/60 px-2.5 py-0.5 font-mono text-[11px] text-muted-foreground">
+                <span
+                  className={`h-1.5 w-1.5 rounded-full ${
+                    stats.status === 'online' ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'
+                  }`}
+                />
+                {stats.status === 'online'
+                  ? `${stats.nodesCount} nodo${stats.nodesCount === 1 ? '' : 's'} activo${
+                      stats.nodesCount === 1 ? '' : 's'
+                    }`
+                  : 'Modo P2P local'}
+              </span>
+            )}
+          </div>
           <h2 className="text-3xl font-semibold tracking-tight text-balance md:text-4xl">
             Un enjambre que nunca duerme
           </h2>
@@ -33,6 +74,13 @@ export function NetworkBand() {
             Cada nodo replica, verifica y retransmite. Cuantos más participantes, más rápida y resistente se vuelve la
             red. Así funciona un torrente: la escala es la fortaleza.
           </p>
+          {stats && stats.status === 'online' && (
+            <div className="mt-2 flex flex-wrap gap-4 font-mono text-xs text-muted-foreground">
+              {stats.totalCores > 0 && <div>Núcleos: <span className="text-foreground">{stats.totalCores}</span></div>}
+              {stats.totalRamGb > 0 && <div>RAM: <span className="text-foreground">{stats.totalRamGb} GB</span></div>}
+              {stats.latencyMs > 0 && <div>Latencia tracker: <span className="text-foreground">{stats.latencyMs} ms</span></div>}
+            </div>
+          )}
         </Reveal>
 
         <Reveal delay={0.15}>
