@@ -84,3 +84,33 @@
   opacity: 0.035;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
+
+
+/* --- Reveal ---------------------------------------------------------------
+   Animacion de entrada en CSS puro. Arranca en el primer pintado, sin esperar
+   a que React hidrate. Antes el estado inicial era opacity-0 y solo se revelaba
+   desde un useEffect, asi que si el JS tardaba o fallaba el contenido se
+   quedaba invisible de forma permanente.
+   animation-fill-mode: both deja el elemento visible al terminar. */
+@keyframes tt-reveal-in {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.tt-reveal {
+  animation: tt-reveal-in 700ms cubic-bezier(0.21, 0.47, 0.32, 0.98) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tt-reveal {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
