@@ -1,45 +1,37 @@
-'use client'
-
-import { useReducedMotion } from 'framer-motion'
-import { useEffect, useState } from 'react'
+import type { ReactNode } from 'react'
 
 type RevealProps = {
-  children: React.ReactNode
+  children: ReactNode
   delay?: number
   className?: string
   as?: 'div' | 'section' | 'li' | 'article'
 }
 
-/** Entrada fluida con fade + elevación sutil garantizada en carga y scroll. */
+/**
+ * Entrada fluida con fade + elevacion sutil.
+ *
+ * La animacion es CSS pura (`.tt-reveal` en app/globals.css) y arranca en el
+ * primer pintado, sin depender de que React hidrate.
+ *
+ * La version anterior guardaba un estado `mounted` que empezaba en false, asi
+ * que el HTML del servidor salia con `opacity-0` y el contenido solo se
+ * revelaba desde un useEffect. Si el JS tardaba, se ejecutaba en una pestana
+ * en segundo plano o fallaba, el contenido quedaba invisible de forma
+ * permanente: se midio opacidad 0 en /descargar y 0.179 en la portada.
+ *
+ * Al ser CSS, `prefers-reduced-motion` se resuelve en la hoja de estilos y ya
+ * no hace falta el hook de framer-motion aqui.
+ */
 export function Reveal({ children, delay = 0, className = '', as: Tag = 'div' }: RevealProps) {
-  const shouldReduceMotion = useReducedMotion()
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    const timer = requestAnimationFrame(() => setMounted(true))
-    return () => cancelAnimationFrame(timer)
-  }, [])
-
-  if (shouldReduceMotion) {
-    return <Tag className={className}>{children}</Tag>
-  }
-
   return (
-    <Tag
-      style={{
-        transitionDelay: `${delay}s`,
-      }}
-      className={`transition-all duration-700 ease-[cubic-bezier(0.21,0.47,0.32,0.98)] ${
-        mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
-      } ${className}`}
-    >
+    <Tag className={`tt-reveal ${className}`} style={{ animationDelay: `${delay}s` }}>
       {children}
     </Tag>
   )
 }
 
 /** Contenedor de stagger para secuencias de entrada. */
-export function Stagger({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+export function Stagger({ children, className = '' }: { children: ReactNode; className?: string }) {
   return <div className={className}>{children}</div>
 }
 
@@ -48,7 +40,7 @@ export function StaggerItem({
   className = '',
   delay = 0,
 }: {
-  children: React.ReactNode
+  children: ReactNode
   className?: string
   delay?: number
 }) {
