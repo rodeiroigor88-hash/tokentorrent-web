@@ -1,9 +1,10 @@
 import { Reveal } from '@/components/site/reveal'
+import { LICENSE_URL, LICENSE_NAME, REPO_URL } from '@/lib/site'
 
 const PROPS = [
   {
     title: 'Peer-to-peer real',
-    body: 'Las capas del modelo viajan directamente entre los nodos del enjambre. Sin servidor central que las ejecute por ti ni pueda caerse.',
+    body: 'Las capas del modelo viajan directamente entre los nodos del enjambre. No hay un servidor central que ejecute el modelo por ti ni un único punto que pueda caerse.',
     icon: (
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
         <circle cx="4" cy="10" r="2.2" stroke="currentColor" strokeWidth="1.5" />
@@ -15,7 +16,7 @@ const PROPS = [
   },
   {
     title: 'Identidad verificable',
-    body: 'Cada nodo del enjambre tiene un certificado propio (TLS/mTLS) y demuestra con Proof of Compute que realmente ejecuta las capas que dice alojar.',
+    body: 'Cada nodo tiene un certificado propio (cifrado TLS/mTLS) y demuestra con Proof of Compute que ejecuta de verdad las capas que dice alojar.',
     icon: (
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
         <path d="M11 2L4 11h5l-1 7 7-9h-5l1-7z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
@@ -24,7 +25,29 @@ const PROPS = [
   },
   {
     title: 'Código abierto',
-    body: 'Todo el protocolo es auditable en GitHub. Se ejecuta en tu propio hardware, con licencia Apache 2.0.',
+    body: (
+      <>
+        El protocolo (tracker y nodos worker) está publicado en{' '}
+        <a
+          href={REPO_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-foreground underline decoration-primary/40 underline-offset-4 transition-colors hover:text-primary"
+        >
+          GitHub
+        </a>{' '}
+        bajo licencia{' '}
+        <a
+          href={LICENSE_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-foreground underline decoration-primary/40 underline-offset-4 transition-colors hover:text-primary"
+        >
+          {LICENSE_NAME}
+        </a>
+        . La aplicación de escritorio sigue en desarrollo.
+      </>
+    ),
     icon: (
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
         <rect x="4" y="9" width="12" height="8" rx="1.5" stroke="currentColor" strokeWidth="1.5" />

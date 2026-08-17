@@ -4,15 +4,11 @@ import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { SiteHeader } from '@/components/site/site-header'
 import { SiteFooter } from '@/components/site/site-footer'
+import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from '@/lib/site'
 import './globals.css'
 
 const geistSans = Geist({ subsets: ['latin'], variable: '--font-geist-sans' })
 const geistMono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono' })
-
-const SITE_URL = 'https://www.tokentorrent.es'
-const SITE_NAME = 'TokenTorrent'
-const SITE_DESCRIPTION =
-  'TokenTorrent reparte las capas de un modelo de lenguaje entre varios ordenadores y las ejecuta en cadena sobre HTTP. Igual que BitTorrent mueve bits, TokenTorrent mueve tokens. Código abierto, sin servidor central.'
 
 export const metadata: Metadata = {
   // `metadataBase` es el que Next.js usa para resolver URLs relativas en

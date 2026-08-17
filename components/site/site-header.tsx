@@ -5,16 +5,16 @@ import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MagneticButton } from '@/components/site/magnetic-button'
-
-const NAV = [
-  { href: '/', label: 'Inicio' },
-  { href: '/caracteristicas', label: 'Características' },
-  { href: '/seguridad', label: 'Seguridad' },
-]
+import { NAV_LINKS } from '@/lib/site'
 
 export function SiteHeader() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
+
+  // Cierra el menú móvil al navegar, para que el usuario no se quede "colgado".
+  function close() {
+    setOpen(false)
+  }
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-xl">
@@ -31,14 +31,14 @@ export function SiteHeader() {
         </Link>
 
         <nav aria-label="Principal" className="hidden items-center gap-1 md:flex">
-          {NAV.map((item) => {
+          {NAV_LINKS.map((item) => {
             const active = pathname === item.href
             return (
               <Link
                 key={item.href}
                 href={item.href}
                 aria-current={active ? 'page' : undefined}
-                className={`relative rounded-full px-4 py-1.5 text-sm transition-colors ${
+                className={`relative rounded-full px-4 py-1.5 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
                   active ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
@@ -57,14 +57,14 @@ export function SiteHeader() {
 
         <div className="hidden md:block">
           <MagneticButton href="/descargar" size="sm">
-            Descargar
+            Lista de espera
           </MagneticButton>
         </div>
 
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="flex h-9 w-9 items-center justify-center rounded-md text-foreground md:hidden"
+          className="flex h-9 w-9 items-center justify-center rounded-md text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:hidden"
           aria-expanded={open}
           aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
         >
@@ -89,12 +89,13 @@ export function SiteHeader() {
             className="overflow-hidden border-t border-border/60 md:hidden"
           >
             <div className="flex flex-col gap-1 px-6 py-4">
-              {[...NAV, { href: '/descargar', label: 'Descargar' }].map((item) => (
+              {[...NAV_LINKS, { href: '/descargar', label: 'Lista de espera' }].map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  onClick={() => setOpen(false)}
-                  className={`rounded-md px-3 py-2.5 text-sm ${
+                  onClick={close}
+                  aria-current={pathname === item.href ? 'page' : undefined}
+                  className={`rounded-md px-3 py-2.5 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
                     pathname === item.href ? 'bg-secondary text-foreground' : 'text-muted-foreground'
                   }`}
                 >

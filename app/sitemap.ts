@@ -13,6 +13,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/caracteristicas', changeFrequency: 'monthly', priority: 0.8 },
     { path: '/seguridad', changeFrequency: 'monthly', priority: 0.8 },
     { path: '/descargar', changeFrequency: 'weekly', priority: 0.9 },
+    { path: '/roadmap', changeFrequency: 'weekly', priority: 0.8 },
+    { path: '/legal', changeFrequency: 'monthly', priority: 0.4 },
   ]
   return paths.map(({ path, changeFrequency, priority }) => ({
     url: `${SITE_URL}${path}`,

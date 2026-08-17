@@ -30,7 +30,7 @@ export function WaitlistForm() {
         <button
           type="submit"
           disabled={pending}
-          className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-primary px-7 text-sm font-medium tracking-tight text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-60"
+          className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-primary px-7 text-sm font-medium tracking-tight text-primary-foreground transition-all hover:bg-primary/90 active:scale-[0.98] active:bg-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-60"
         >
           {pending ? (
             <>
@@ -41,7 +41,7 @@ export function WaitlistForm() {
               Enviando…
             </>
           ) : (
-            'Unirme a la lista'
+            'Apuntarme a la lista'
           )}
         </button>
       </div>

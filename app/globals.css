@@ -48,7 +48,9 @@
   --secondary: oklch(0.22 0.014 250);
   --secondary-foreground: oklch(0.95 0.006 240);
   --muted: oklch(0.2 0.013 250);
-  --muted-foreground: oklch(0.63 0.01 245);
+  /* Subido respecto al 0.63 original para que el texto gris pequeño (párrafos,
+     metadatos y enlaces del pie) mantenga contraste suficiente sobre el fondo. */
+  --muted-foreground: oklch(0.72 0.012 245);
   --accent: oklch(0.85 0.13 192);
   --accent-foreground: oklch(0.15 0.02 250);
   --destructive: oklch(0.65 0.2 25);
@@ -68,9 +70,21 @@
   body {
     @apply bg-background text-foreground font-sans;
   }
+  /* Indicador de foco visible y coherente para navegación por teclado.
+     El outline sigue el border-radius del propio elemento. */
+  :where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
   ::selection {
     background: var(--primary);
     color: var(--primary-foreground);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }
 
