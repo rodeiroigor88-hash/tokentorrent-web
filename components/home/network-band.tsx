@@ -1,13 +1,12 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { motion, useReducedMotion } from 'framer-motion'
 import { Reveal } from '@/components/site/reveal'
+import { NetworkScene } from '@/components/home/network-scene'
 import type { SwarmStats } from '@/app/api/swarm/route'
 
 export function NetworkBand() {
   const [stats, setStats] = useState<SwarmStats | null>(null)
-  const shouldReduceMotion = useReducedMotion()
 
   useEffect(() => {
     let mounted = true
@@ -32,24 +31,6 @@ export function NetworkBand() {
       clearInterval(interval)
     }
   }, [])
-
-  const nodes = [
-    { x: 12, y: 30 },
-    { x: 24, y: 54 },
-    { x: 39, y: 20 },
-    { x: 57, y: 38 },
-    { x: 73, y: 66 },
-    { x: 88, y: 44 },
-  ]
-  const edges = [
-    [0, 1],
-    [1, 2],
-    [2, 3],
-    [3, 4],
-    [4, 5],
-    [0, 3],
-    [1, 4],
-  ]
 
   return (
     <section className="border-t border-border/60 bg-card/30">
@@ -102,90 +83,18 @@ export function NetworkBand() {
         </Reveal>
 
         <Reveal delay={0.1}>
-          <div className="relative overflow-hidden rounded-[2rem] border border-border/80 bg-background p-4 shadow-xl shadow-black/20">
-            <div className="mb-4 flex items-center justify-between px-2">
-              <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-                Diagrama de red
-              </p>
-              <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-                tokentorrent
-              </p>
-            </div>
-
-            <div className="relative aspect-[16/10] overflow-hidden rounded-[1.5rem] border border-border/70 bg-[#091017]">
-              <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(54,231,236,0.12),transparent_34%),radial-gradient(circle_at_20%_80%,rgba(54,231,236,0.08),transparent_22%),radial-gradient(circle_at_80%_18%,rgba(54,231,236,0.08),transparent_22%)]" />
-              <svg viewBox="0 0 100 100" className="relative h-full w-full" role="img" aria-label="Diagrama abstracto de nodos conectados">
-                <g stroke="currentColor" className="text-border/80" strokeWidth="0.35" fill="none">
-                  {edges.map(([a, b], i) => (
-                    <line
-                      key={`${a}-${b}`}
-                      x1={nodes[a].x}
-                      y1={nodes[a].y}
-                      x2={nodes[b].x}
-                      y2={nodes[b].y}
-                      opacity={0.6 + (i % 3) * 0.12}
-                    />
-                  ))}
-                </g>
-
-                {nodes.map((n, i) => (
-                  <g key={`${n.x}-${n.y}`}>
-                    <circle cx={n.x} cy={n.y} r="2.2" className="fill-[#091017] stroke-primary" strokeWidth="0.8" />
-                    {!shouldReduceMotion && (
-                      <motion.circle
-                        cx={n.x}
-                        cy={n.y}
-                        r="2.2"
-                        className="fill-none stroke-primary/30"
-                        initial={{ r: 2.2, opacity: 0.5 }}
-                        animate={{ r: 5.8, opacity: 0 }}
-                        transition={{ duration: 2.4, delay: i * 0.18, repeat: Infinity }}
-                        strokeWidth="0.35"
-                      />
-                    )}
-                  </g>
-                ))}
-
-                {!shouldReduceMotion &&
-                  [
-                    [14, 28, 28, 42],
-                    [25, 55, 39, 20],
-                    [40, 20, 57, 38],
-                    [57, 38, 73, 66],
-                    [73, 66, 88, 44],
-                  ].map(([x1, y1, x2, y2], i) => (
-                    <motion.line
-                      key={`${x1}-${y1}-${x2}-${y2}`}
-                      x1={x1}
-                      y1={y1}
-                      x2={x2}
-                      y2={y2}
-                      stroke="rgba(74,239,243,0.75)"
-                      strokeWidth="0.65"
-                      strokeLinecap="round"
-                      initial={{ pathLength: 0, opacity: 0 }}
-                      animate={{ pathLength: [0, 1, 1], opacity: [0, 0.9, 0] }}
-                      transition={{ duration: 2.2, delay: i * 0.4, repeat: Infinity }}
-                    />
-                  ))}
-              </svg>
-            </div>
-
-            <div className="mt-4 flex flex-wrap items-center gap-3 px-2 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-              <span className="inline-flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-primary" />
-                nodo
-              </span>
-              <span className="inline-flex items-center gap-2">
-                <span className="h-2 w-2 rounded-[2px] bg-primary/80" />
-                capa del modelo
-              </span>
-              <span className="inline-flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-cyan-300/80" />
-                token
-              </span>
-            </div>
+          <div className="flex items-center justify-between gap-4 px-1 pb-4">
+            <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">Diagrama de red</p>
+            <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">tokentorrent</p>
           </div>
+
+          <NetworkScene
+            interactive
+            nodes={stats?.nodes}
+            route={stats?.route}
+            label="Ruta del enjambre de TokenTorrent: los nodos del pipeline conectados en orden, con tokens viajando por la ruta"
+            description="Visualización holográfica de la ruta real del enjambre. Cada nodo aparece como un punto con su rango de capas, unidos por una única línea continua en el orden del pipeline. Pulsos de color turquesa (tokens) viajan de nodo a nodo por esa ruta. Incluye controles para pausar, reiniciar y activar una vista guiada."
+          />
         </Reveal>
       </div>
     </section>
