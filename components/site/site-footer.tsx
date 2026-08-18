@@ -25,7 +25,8 @@ const LEGAL_LINKS = [
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-border/60">
+    <footer className="relative border-t border-border/60 bg-card/20">
+      <div aria-hidden="true" className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/35 to-transparent" />
       <div className="mx-auto grid max-w-6xl gap-10 px-6 py-12 md:grid-cols-[1.2fr_1fr_1fr_1fr]">
         <div className="flex flex-col gap-3">
           <span className="font-mono text-sm font-semibold tracking-tight">

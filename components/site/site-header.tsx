@@ -57,7 +57,7 @@ export function SiteHeader() {
 
         <div className="hidden md:block">
           <MagneticButton href="/descargar" size="sm">
-            Lista de espera
+            <span className="flex items-center gap-2">Lista de espera <span aria-hidden="true">→</span></span>
           </MagneticButton>
         </div>
 
@@ -89,7 +89,7 @@ export function SiteHeader() {
             className="overflow-hidden border-t border-border/60 md:hidden"
           >
             <div className="flex flex-col gap-1 px-6 py-4">
-              {[...NAV_LINKS, { href: '/descargar', label: 'Lista de espera' }].map((item) => (
+              {[...NAV_LINKS, { href: '/descargar', label: 'Lista de espera →' }].map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
