@@ -9,7 +9,7 @@ const quickFacts = ['P2P real', 'Proof of Compute', 'Código abierto']
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden">
+    <section className="grid-surface relative overflow-hidden">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <div className="absolute left-1/2 top-0 h-[42rem] w-[42rem] -translate-x-1/2 rounded-full bg-primary/10 blur-3xl" />
         {[14, 32, 50, 68, 86].map((left, i) => (
