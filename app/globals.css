@@ -80,6 +80,26 @@
     background: var(--primary);
     color: var(--primary-foreground);
   }
+  /* Scrollbar fina y coherente con el acento del producto. */
+  html {
+    scrollbar-color: color-mix(in oklch, var(--primary) 55%, var(--background)) var(--background);
+    scrollbar-width: thin;
+  }
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  *::-webkit-scrollbar-track {
+    background: var(--background);
+  }
+  *::-webkit-scrollbar-thumb {
+    border: 3px solid var(--background);
+    border-radius: 999px;
+    background: color-mix(in oklch, var(--primary) 55%, var(--background));
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
