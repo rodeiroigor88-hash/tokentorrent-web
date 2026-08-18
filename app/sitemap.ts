@@ -12,6 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/', changeFrequency: 'weekly', priority: 1.0 },
     { path: '/caracteristicas', changeFrequency: 'monthly', priority: 0.8 },
     { path: '/seguridad', changeFrequency: 'monthly', priority: 0.8 },
+    { path: '/estado', changeFrequency: 'always', priority: 0.8 },
     { path: '/descargar', changeFrequency: 'weekly', priority: 0.9 },
     { path: '/roadmap', changeFrequency: 'weekly', priority: 0.8 },
     { path: '/legal', changeFrequency: 'monthly', priority: 0.4 },

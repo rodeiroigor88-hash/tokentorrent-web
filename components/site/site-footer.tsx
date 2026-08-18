@@ -5,6 +5,7 @@ const SITE_LINKS = [
   { href: '/', label: 'Inicio' },
   { href: '/caracteristicas', label: 'Características' },
   { href: '/seguridad', label: 'Seguridad' },
+  { href: '/estado', label: 'Estado' },
   { href: '/roadmap', label: 'Roadmap' },
   { href: '/descargar', label: 'Lista de espera' },
 ] as const

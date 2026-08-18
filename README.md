@@ -18,8 +18,8 @@ presenta y gestiona la lista de espera de la aplicación de escritorio para Wind
 ## Desarrollo local
 
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
 
 Abre [http://localhost:3000](http://localhost:3000).
@@ -27,9 +27,9 @@ Abre [http://localhost:3000](http://localhost:3000).
 Otros comandos:
 
 ```bash
-npm run build      # build de produccion
-npm run lint       # ESLint
-npm run typecheck  # solo comprobacion de tipos, sin emitir
+pnpm build      # build de produccion
+pnpm lint       # ESLint
+pnpm typecheck  # solo comprobacion de tipos, sin emitir
 ```
 
 ## Variables de entorno
@@ -48,13 +48,33 @@ lib/              utilidades compartidas
 public/           iconos y assets estaticos
 ```
 
+## Estado público
+
+La ruta `/estado` muestra las métricas públicas del enjambre y se actualiza automáticamente cada 15 segundos.
+La portada enlaza a esta vista desde el diagrama de red.
+
+El endpoint `GET /api/swarm` consulta `${TRACKER_API_URL}/status` con un timeout de 4 segundos y devuelve:
+
+- `online` cuando hay nodos válidos visibles.
+- `degraded` cuando el tracker responde sin nodos o incumple parcialmente el contrato.
+- `offline` cuando no hay configuración local del tracker o no se puede consultar.
+
+La web usa `/status` para monitorización. `/plan` queda reservado para negociar rutas de inferencia firmadas y necesita
+un callback válido. Las respuestas inválidas no se convierten en cifras inventadas: los nodos malformados se descartan y los recursos sin
+declarar cuentan como cero. El endpoint conserva una respuesta JSON estable para que la portada pueda mostrar un estado
+degradado sin romperse durante una caída temporal.
+
+Las respuestas con un enjambre válido permiten una caché compartida de 10 segundos y hasta 30 segundos de
+revalidación en segundo plano. Las respuestas `offline` o de error se sirven con `no-store`, para no ocultar una caída
+real detrás de una caché antigua.
+
 ## Contribuir
 
 - El copy de la web describe el protocolo real (P2P, TLS/mTLS, Proof of Compute, enrutamiento firmado) — evita
   vocabulario de finanzas/cripto ("wallet", "custodia", "liquidacion", tickers de token) que no corresponde a lo que
   hace TokenTorrent.
 - La app de escritorio es para **Windows**, no una app movil.
-- Antes de abrir PR: `npm run lint && npm run typecheck && npm run build` deben pasar limpios.
+- Antes de abrir PR: `pnpm lint && pnpm typecheck && pnpm build` deben pasar limpios.
 
 ## Licencia
 

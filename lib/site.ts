@@ -41,5 +41,6 @@ export const NAV_LINKS = [
   { href: '/', label: 'Inicio' },
   { href: '/caracteristicas', label: 'Características' },
   { href: '/seguridad', label: 'Seguridad' },
+  { href: '/estado', label: 'Estado' },
   { href: '/roadmap', label: 'Roadmap' },
 ] as const

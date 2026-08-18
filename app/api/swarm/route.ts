@@ -23,7 +23,7 @@ export interface SwarmStats {
   lastUpdated: string
   /** Inventario completo de nodos visibles. */
   nodes: SwarmNode[]
-  /** Ruta del pipeline en orden; el índice de cada elemento es su routeIndex. */
+  /** Inventario ordenado para visualización; no es una ruta firmada de inferencia. */
   route: SwarmNode[]
 }
 
@@ -36,6 +36,16 @@ interface TrackerNode {
   donated_cores?: number | null
   donated_ram_mb?: number | null
   last_seen?: number | null
+  seen_ago?: number | null
+}
+
+function isTrackerNode(value: unknown): value is TrackerNode {
+  return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
+
+function layerStart(value: unknown) {
+  const match = typeof value === 'string' ? value.match(/^\s*(\d+)/) : null
+  return match ? Number(match[1]) : Number.MAX_SAFE_INTEGER
 }
 
 function toSwarmNode(n: TrackerNode): SwarmNode {
@@ -44,7 +54,12 @@ function toSwarmNode(n: TrackerNode): SwarmNode {
     modelArch: n.model_arch ?? n.model_name ?? null,
     layers: n.layers ?? null,
     isLast: n.is_last === 1 || n.is_last === true,
-    lastSeen: typeof n.last_seen === 'number' ? n.last_seen : null,
+    lastSeen:
+      typeof n.last_seen === 'number'
+        ? n.last_seen
+        : typeof n.seen_ago === 'number'
+          ? Math.floor(Date.now() / 1000) - n.seen_ago
+          : null,
   }
 }
 
@@ -66,7 +81,7 @@ function emptyStats(partial: Partial<SwarmStats> = {}): SwarmStats {
 export async function GET() {
   const trackerUrl = process.env.TRACKER_API_URL
   if (!trackerUrl) {
-    return NextResponse.json<SwarmStats>(
+    return statsResponse(
       emptyStats({ error: 'TRACKER_API_URL no está configurado' }),
       { status: 503 },
     )
@@ -74,21 +89,18 @@ export async function GET() {
 
   const base = trackerUrl.replace(/\/$/, '')
   const startTime = Date.now()
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), 4000)
 
   try {
-    const controller = new AbortController()
-    const timeout = setTimeout(() => controller.abort(), 4000)
-
-    // /plan es el inventario del tracker: devuelve `nodes` (inventario) y
-    // `route` (la ruta del pipeline ya ordenada). El anterior /status estaba
-    // reescrito por vercel.json hacia /health, que no trae la clave `nodes`.
-    const res = await fetch(`${base}/plan`, {
+    // /status es la vista pública del inventario. /plan requiere un callback
+    // firmado y no es un endpoint de monitorización: no debe llamarse desde
+    // esta página sin contexto de inferencia.
+    const res = await fetch(`${base}/status`, {
       signal: controller.signal,
       headers: { Accept: 'application/json' },
       next: { revalidate: 10 },
     })
-    clearTimeout(timeout)
-
     const latencyMs = Date.now() - startTime
 
     if (!res.ok) {
@@ -99,7 +111,7 @@ export async function GET() {
 
     // Un 200 sin array `nodes` es un fallo de contrato, no un enjambre vacio.
     if (!Array.isArray(data?.nodes)) {
-      return NextResponse.json<SwarmStats>(
+      return statsResponse(
         emptyStats({
           status: 'degraded',
           error: 'El tracker no devolvió la lista de nodos',
@@ -108,8 +120,13 @@ export async function GET() {
       )
     }
 
-    const rawNodes = data.nodes as TrackerNode[]
-    const rawRoute = Array.isArray(data?.route) ? (data.route as TrackerNode[]) : []
+    // El tracker puede devolver entradas nulas durante un refresh. Se
+    // descartan aquí para que una respuesta parcial no rompa toda la página.
+    const rawNodes: TrackerNode[] = data.nodes.filter(isTrackerNode)
+    // El tracker de referencia no expone una ruta en /status. Ordenamos el
+    // inventario por rango y lo usamos como vista aproximada, etiquetada como
+    // inventario, sin presentarlo como una ruta firmada de inferencia.
+    const rawRoute: TrackerNode[] = [...rawNodes].sort((a, b) => layerStart(a.layers) - layerStart(b.layers))
 
     const nodes = rawNodes.map(toSwarmNode)
     const route = rawRoute.map(toSwarmNode)
@@ -124,8 +141,9 @@ export async function GET() {
     const totalCores = rawNodes.reduce((acc, n) => acc + (Number(n.donated_cores) || 0), 0)
     const totalRamMb = rawNodes.reduce((acc, n) => acc + (Number(n.donated_ram_mb) || 0), 0)
 
-    return NextResponse.json<SwarmStats>({
-      status: 'online',
+    return statsResponse({
+      // Un tracker accesible pero sin nodos no representa un enjambre sano.
+      status: rawNodes.length > 0 ? 'online' : 'degraded',
       nodesCount: rawNodes.length,
       models,
       totalCores,
@@ -134,13 +152,21 @@ export async function GET() {
       lastUpdated: new Date().toISOString(),
       nodes,
       route,
-    })
+    }, undefined, 'public, s-maxage=10, stale-while-revalidate=30')
   } catch {
     // Si el tracker esta temporalmente fuera o en desarrollo local, responder
     // con fallback. Se mantiene el 200 para no romper la portada.
-    return NextResponse.json<SwarmStats>(
+    return statsResponse(
       emptyStats({ error: 'No se pudo conectar con el tracker' }),
       { status: 200 },
     )
+  } finally {
+    clearTimeout(timeout)
   }
+}
+
+function statsResponse(stats: SwarmStats, init?: ResponseInit, cacheControl = 'no-store') {
+  const response = NextResponse.json<SwarmStats>(stats, init)
+  response.headers.set('Cache-Control', cacheControl)
+  return response
 }
