@@ -109,12 +109,15 @@ export async function GET() {
 
     const data = await res.json()
 
-    // Un 200 sin array `nodes` es un fallo de contrato, no un enjambre vacio.
+    // Un 200 sin array `nodes` es un fallo de contrato — puede ser que
+    // TRACKER_API_URL apunte a un endpoint de healthcheck (p. ej. `/health`
+    // devuelve `{status, storage}`) en vez de al inventario del tracker. La
+    // ruta esperada es la que expone `{nodes: [{node_id, donated_cores, ...}]}`.
     if (!Array.isArray(data?.nodes)) {
       return statsResponse(
         emptyStats({
           status: 'degraded',
-          error: 'El tracker no devolvió la lista de nodos',
+          error: 'El tracker no expone inventario en TRACKER_API_URL/status',
           latencyMs,
         }),
       )
