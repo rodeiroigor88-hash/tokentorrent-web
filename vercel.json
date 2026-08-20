@@ -1,5 +1,9 @@
 {
     "rewrites": [
+        {
+            "source": "/ai-torrent/status",
+            "destination": "http://us-1.in.supercores.host:9007/health"
+        },
           {
                   "source": "/ai-torrent/:path*",
                   "destination": "http://us-1.in.supercores.host:9007/ai-torrent/:path*"
