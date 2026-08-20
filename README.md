@@ -59,6 +59,12 @@ El endpoint `GET /api/swarm` consulta `${TRACKER_API_URL}/status` con un timeout
 - `degraded` cuando el tracker responde sin nodos o incumple parcialmente el contrato.
 - `offline` cuando no hay configuración local del tracker o no se puede consultar.
 
+**`TRACKER_API_URL`** debe apuntar a la raíz del tracker que expone el inventario público del enjambre, sin barra final
+(p. ej. `http://us-1.in.supercores.host:9007/ai-torrent`). La ruta la compone la propia app añadiendo `/status`, así
+que **no incluyas `/status` ni `/health` en la variable**. Si `TRACKER_API_URL/status` responde 200 pero sin el array
+`nodes` (por ejemplo porque apunta a un healthcheck), `/api/swarm` devuelve `degraded` con
+`error: "El tracker no expone inventario en TRACKER_API_URL/status"`.
+
 La web usa `/status` para monitorización. `/plan` queda reservado para negociar rutas de inferencia firmadas y necesita
 un callback válido. Las respuestas inválidas no se convierten en cifras inventadas: los nodos malformados se descartan y los recursos sin
 declarar cuentan como cero. El endpoint conserva una respuesta JSON estable para que la portada pueda mostrar un estado
