@@ -1,24 +1,48 @@
+import type { ReleaseInfo } from '@/lib/release'
+import { REPO_URL } from '@/lib/site'
+
+const WINDOWS_ICON = (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M3 5.5L10 4.5V11.5H3V5.5ZM11 4.4L21 3V11.5H11V4.4ZM3 12.5H10V19.5L3 18.5V12.5ZM11 12.5H21V21L11 19.6V12.5Z" />
+  </svg>
+)
+
 /** Contenedor estilizado para el badge de Windows y el enlace al código fuente. */
-export function StoreBadges() {
+export function StoreBadges({ release }: { release?: ReleaseInfo }) {
+  const available = release?.available && release.url
   return (
     <div className="flex flex-col items-center gap-4">
-      <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">Disponible pronto en</p>
+      <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+        {available ? 'Disponible en' : 'Disponible pronto en'}
+      </p>
       <div className="flex flex-wrap items-center justify-center gap-4">
-        <div
-          aria-label="Windows, disponible próximamente"
-          className="flex h-14 w-44 items-center justify-center gap-3 rounded-xl border border-dashed border-border bg-card/50 text-muted-foreground"
-        >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M3 5.5L10 4.5V11.5H3V5.5ZM11 4.4L21 3V11.5H11V4.4ZM3 12.5H10V19.5L3 18.5V12.5ZM11 12.5H21V21L11 19.6V12.5Z" />
-          </svg>
-          <span className="text-left text-xs leading-tight">
-            <span className="block text-[10px]">Próximamente</span>
-            <span className="block font-semibold text-foreground/60">Windows</span>
-          </span>
-        </div>
+        {available ? (
+          <a
+            href={release!.url}
+            aria-label="Descargar para Windows"
+            className="flex h-14 w-44 items-center justify-center gap-3 rounded-xl border border-border bg-card/50 text-foreground transition-colors hover:border-primary/40 hover:text-primary"
+          >
+            {WINDOWS_ICON}
+            <span className="text-left text-xs leading-tight">
+              <span className="block text-[10px] text-muted-foreground">Descargar</span>
+              <span className="block font-semibold">Windows</span>
+            </span>
+          </a>
+        ) : (
+          <div
+            aria-label="Windows, disponible próximamente"
+            className="flex h-14 w-44 items-center justify-center gap-3 rounded-xl border border-dashed border-border bg-card/50 text-muted-foreground"
+          >
+            {WINDOWS_ICON}
+            <span className="text-left text-xs leading-tight">
+              <span className="block text-[10px]">Próximamente</span>
+              <span className="block font-semibold text-foreground/60">Windows</span>
+            </span>
+          </div>
+        )}
 
         <a
-          href="https://github.com/rodeiroigor88-hash/AI-Torrent-Protocol"
+          href={REPO_URL}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Código fuente en GitHub, disponible ahora"
